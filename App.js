@@ -9,6 +9,14 @@ export default function App() {
       <StatusBar style="auto" />
     </View>
   );
+
+  async componentDidMount() {
+
+    this.requestPermissionAsync()
+
+  }
+
+
 }
 //
 const styles = StyleSheet.create({
