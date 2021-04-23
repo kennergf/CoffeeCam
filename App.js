@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { CameraRoll, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
@@ -14,6 +14,22 @@ export default function App() {
 
     this.requestPermissionAsync()
 
+  }
+
+  changeCameraOrientation = () => {
+
+    const {cameraOrientation: orientation} = this.state
+
+    this.setState({
+
+      cameraOrientation:
+
+        orientation === Camera.Constants.Type.back
+
+          ? Camera.Constants.Type.front
+          : Camera.Constants.Type.Back
+
+    })
   }
 
 
