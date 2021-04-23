@@ -2,26 +2,25 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { CameraRoll, StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-  
-  
-  async componentDidMount() {
+export default class App extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+        <StatusBar style="auto" />
+      </View>
+    );
+  }
 
+  async componentDidMount() {
     //Request permission from the user
     this.requestPermissionAsync()
-
   }
 
   changeCameraOrientation = () => {
 
     //Functional component
-    const {cameraOrientation: orientation} = this.state
+    const { cameraOrientation: orientation } = this.state
 
     this.setState({
 
@@ -42,7 +41,7 @@ export default function App() {
 
       let photo = await this.camera.takePictureAsync();
       console.log(photo);
-      const {uri} = photo;
+      const { uri } = photo;
       console.log('uri', uri);
     }
   }
