@@ -9,15 +9,18 @@ export default function App() {
       <StatusBar style="auto" />
     </View>
   );
-
+  
+  
   async componentDidMount() {
 
+    //Request permission from the user
     this.requestPermissionAsync()
 
   }
 
   changeCameraOrientation = () => {
 
+    //Functional component
     const {cameraOrientation: orientation} = this.state
 
     this.setState({
@@ -30,6 +33,18 @@ export default function App() {
           : Camera.Constants.Type.Back
 
     })
+  }
+
+  takePicture = async () => {
+
+    //Method of Camera
+    if (this.camera) {
+
+      let photo = await this.camera.takePictureAsync();
+      console.log(photo);
+      const {uri} = photo;
+      console.log('uri', uri);
+    }
   }
 
 
