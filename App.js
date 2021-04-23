@@ -18,27 +18,20 @@ export default class App extends React.Component {
   }
 
   changeCameraOrientation = () => {
-
     //Functional component
     const { cameraOrientation: orientation } = this.state
 
     this.setState({
-
       cameraOrientation:
-
         orientation === Camera.Constants.Type.back
-
           ? Camera.Constants.Type.front
           : Camera.Constants.Type.Back
-
     })
   }
 
   takePicture = async () => {
-
     //Method of Camera
     if (this.camera) {
-
       let photo = await this.camera.takePictureAsync();
       console.log(photo);
       const { uri } = photo;
