@@ -3,14 +3,6 @@ import React from 'react';
 import { CameraRoll, StyleSheet, Text, View } from 'react-native';
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
-    );
-  }
 
   async componentDidMount() {
     //Request permission from the user
@@ -39,6 +31,17 @@ export default class App extends React.Component {
     }
   }
 
+  render() {
+    return (
+      <View style={styles.container}>
+        <Camera style={} type={} ref={ref => {this.camera = ref}}>
+          <View style={}>
+            
+          </View>
+        </Camera>
+      </View>
+    );
+  }
 
 }
 //
