@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { CameraRoll, StyleSheet, Text, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker'
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>CoffeeCam, Open up App.js to start working on your app!</Text>
         <StatusBar style="auto" />
       </View>
     );
@@ -41,6 +42,14 @@ export default class App extends React.Component {
 
 
 }
+
+pickImage = async () => {
+
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images
+  });
+}
+
 //
 const styles = StyleSheet.create({
   container: {
