@@ -1,9 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
+<<<<<<< Updated upstream
 import React from 'react';
 import { CameraRoll, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 
 
+=======
+import React, {useState} from 'react';
+import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
+>>>>>>> Stashed changes
 
 export default class App extends React.Component {
 
@@ -83,4 +88,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  state = {
+    hasPermission: null,
+    type: Camera.Constants.Type.back,
+ 
+
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasPermission: status === 'granted' });
+  },
+  getPermissionAsync = async () => {
+    const { status } = await Camera.requestPermissionsAsync();
+    const { media } =  await MediaLibrary.requestPermissionsAsync();
+    
+    this.setState({ hasPermission: status === 'granted' });
+  },
+
+async componentDidMount() {
+  this.requestPermissionAsync()
+}, 
+requestPermissionAsync = async () => {
+
+    if (Platform.OS === 'ios') {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Unauthorized permission!');
+      }
+    }
+  
+    const { status } = await Camera.requestPermissionsAsync();
+    const { media } =  await MediaLibrary.requestPermissionsAsync();
+    this.setState({ hasPermission: status === 'granted' });
+  },
+  <View>
+            <Text>Hello</Text>
+            <Button
+                onPress={() => {
+                    navigation.navigate('Two')
+                }}
+                title="Go to Screen Two"
+            />
+        </View>
+}
+  
+
+
+
 });
