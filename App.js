@@ -33,6 +33,9 @@ export default class App extends React.Component {
     }
   }
 
+  /**
+   * Print the visual UI to the screen
+   */
   render() {
     //Setting permissions to take pictures using state object
     const { hasPermission } = this.state
@@ -110,7 +113,7 @@ export default class App extends React.Component {
       );
     }
   }
-}
+} // Here finishes the method App with all the functions for the camera
 
 pickImage = async () => {
 
@@ -139,7 +142,9 @@ function changeFlashMode() {
       });
 }
 
-//
+/**
+ * Create the styles for the app
+ */
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -195,3 +200,4 @@ requestPermissionAsync = async () => {
 
 
 });
+// End of styles
