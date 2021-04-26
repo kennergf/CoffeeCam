@@ -103,11 +103,6 @@ export default class App extends React.Component {
                 size={24} 
                 color="black" 
               />
-              {/* Original Button
-              <FontAwesome
-                name="photo"
-                style={{ color: "#fff", fontSize: 40 }}
-              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={{
