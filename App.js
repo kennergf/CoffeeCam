@@ -40,17 +40,76 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Camera style={} type={} ref={ref => {this.camera = ref}}>
-          <View style={}>
-            
+    //Setting permissions to take pictures using button
+    const { hasPermission } = this.state
+
+    //User doesn't have granted or denied permissions
+    if (hasPermission === null) {
+      return <View />;
+    
+    //Denied permission
+    }else if(hasPermission === false){
+      return(
+        <View style={{
+          flex: 1,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+           <Text>No access to camera</Text>
+        </View>
+      );
+    
+    //Granted permission
+    }else{
+      return(
+        <View style={{ flex: 1 }}>
+        <Camera style={{ flex: 1 }} type={this.state.cameraOrientation} ref={ref => { this.camera = ref }}>
+          <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent'
+              }}
+              onPress={() => this.pickImage()}>
+              <FontAwesome
+                name="photo"
+                style={{ color: "#fff", fontSize: 40 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              onPress={() => this.takePictureAndSalveOnAlbum()}
+            >
+              <FontAwesome
+                name="camera"
+                style={{ color: "#fff", fontSize: 40 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+              }}
+              onPress={() => this.changeCameraOrientation()}
+            >
+              <MaterialCommunityIcons
+                name="camera-switch"
+                style={{ color: "#fff", fontSize: 40 }}
+              />
+            </TouchableOpacity>
           </View>
         </Camera>
       </View>
-    );
+      );
+    }
   }
-
 }
 
 pickImage = async () => {
