@@ -3,6 +3,7 @@ import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react';
 import { CameraRoll, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { Audio } from 'expo-av';
 
 export default class App extends React.Component {
 
@@ -12,7 +13,18 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    this.getPermissionAsync()
+    //Request permission from the user
+    this.requestPermissionAsync();
+
+    //Adding sound when taking picture
+    this.cameraShutter = new Audio.Sound();
+    try {
+      await this.cameraShutter.loadAsync(
+        require('./assets/CameraShutter.mp3'),
+      );
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   getPermissionAsync = async () => {
@@ -31,11 +43,6 @@ export default class App extends React.Component {
           ? Camera.Constants.Type.front
           : Camera.Constants.Type.back
     })
-  }
-
-  async componentDidMount() {
-    //Request permission from the user
-    this.requestPermissionAsync()
   }
 
   changeCameraOrientation = () => {
