@@ -8,6 +8,35 @@ var flashMode = Observable();
 
 export default class App extends React.Component {
 
+  state = {
+    hasPermission: null,
+    cameraType: Camera.Constants.Type.back,
+  }
+
+  async componentDidMount() {
+    this.getPermissionAsync()
+  }
+
+  getPermissionAsync = async () => {
+   
+    const { status } = await Camera.requestPermissionsAsync();
+    const { media } =  await MediaLibrary.requestPermissionsAsync();
+   
+    this.setState({ hasPermission: status === 'granted' });
+  }
+
+  handleCameraType = () => {
+    const { cameraType } = this.state
+
+    this.setState({
+      cameraType:
+        cameraType === Camera.Constants.Type.back
+          ? Camera.Constants.Type.front
+          : Camera.Constants.Type.back
+    })
+  }
+  
+
   async componentDidMount() {
     //Request permission from the user
     this.requestPermissionAsync()
@@ -176,86 +205,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  capture: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    borderWidth: 5,
+    borderColor: constant.COLOR_PRIMARY,
+    backgroundColor: constant.COLOR_PRIMARY,
+    marginBottom: 15
+  },
+  
   state = {
     hasPermission: null,
     type: Camera.Constants.Type.back,
- 
-
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasPermission: status === 'granted' });
   },
-  getPermissionAsync = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
-    const { media } =  await MediaLibrary.requestPermissionsAsync();
-    
-    this.setState({ hasPermission: status === 'granted' });
-  },
-
-async componentDidMount() {
-  this.requestPermissionAsync()
-}, 
-requestPermissionAsync = async () => {
-
-    if (Platform.OS === 'ios') {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Unauthorized permission!');
-      }
-    }
-  
-    const { status } = await Camera.requestPermissionsAsync();
-    const { media } =  await MediaLibrary.requestPermissionsAsync();
-    this.setState({ hasPermission: status === 'granted' });
-  },
-
-},
-renderCamera() {
-  return (
-      <Camera
-          ref={(cam) => {
-              this.camera = cam;
-          } }
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-          captureTarget={Camera.constants.CaptureTarget.disk} >
-
-<TouchableHighlight
-                    style={styles.capture}
-                    onPress={this.takePicture.bind(this)}
-                    underlayColor={constant.COLOR_PRIMARY}
-                    >
-                    <View />
-                </TouchableHighlight>
-            </Camera>
-        );
-        const styles = StyleSheet.create({
-          container: {
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#000'
-          },
-      
-          capture: {
-              width: 70,
-              height: 70,
-              borderRadius: 35,
-              borderWidth: 5,
-              borderColor: constant.COLOR_PRIMARY,
-              backgroundColor: constant.COLOR_PRIMARY,
-              marginBottom: 15
-          },
-          preview: {
-              flex: 1,
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              width: '100%',
-              height: '100%'
-          }
-    }
-
+  preview: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%'
+  }
 
 });
 // End of styles
