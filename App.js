@@ -185,18 +185,52 @@ requestPermissionAsync = async () => {
     const { media } =  await MediaLibrary.requestPermissionsAsync();
     this.setState({ hasPermission: status === 'granted' });
   },
-  <View>
-            <Text>Hello</Text>
-            <Button
-                onPress={() => {
-                    navigation.navigate('Two')
-                }}
-                title="Go to Screen Two"
-            />
-        </View>
-}
-  
 
+},
+renderCamera() {
+  return (
+      <Camera
+          ref={(cam) => {
+              this.camera = cam;
+          } }
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.fill}
+          captureTarget={Camera.constants.CaptureTarget.disk} >
+
+<TouchableHighlight
+                    style={styles.capture}
+                    onPress={this.takePicture.bind(this)}
+                    underlayColor={constant.COLOR_PRIMARY}
+                    >
+                    <View />
+                </TouchableHighlight>
+            </Camera>
+        );
+        const styles = StyleSheet.create({
+          container: {
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#000'
+          },
+      
+          capture: {
+              width: 70,
+              height: 70,
+              borderRadius: 35,
+              borderWidth: 5,
+              borderColor: constant.COLOR_PRIMARY,
+              backgroundColor: constant.COLOR_PRIMARY,
+              marginBottom: 15
+          },
+          preview: {
+              flex: 1,
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              width: '100%',
+              height: '100%'
+          }
+    }
 
 
 });
