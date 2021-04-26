@@ -1,15 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-<<<<<<< Updated upstream
-import React from 'react';
-import { CameraRoll, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
-
-
-=======
 import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
->>>>>>> Stashed changes
 
 export default class App extends React.Component {
 
