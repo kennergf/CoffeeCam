@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker'
 import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 var flashMode = Observable();
 
@@ -98,11 +98,10 @@ export default class App extends React.Component {
                 backgroundColor: 'transparent'
               }}
               onPress={() => this.pickImage()}>
-              <Entypo 
-                name="instagram" 
-                size={24} 
-                color="black" 
-              />
+            <FontAwesome
+              name="photo"
+              style={{ color: "#fff", fontSize: 40 }}
+            />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -112,10 +111,16 @@ export default class App extends React.Component {
               }}
               onPress={() => this.takePictureAndSalveOnAlbum()}
             >
+            <FontAwesome 
+              name="camera-retro" 
+              size={24} 
+              color="black" 
+            />
+              {/* Original Button
               <FontAwesome
                 name="camera"
                 style={{ color: "#fff", fontSize: 40 }}
-              />
+              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={{
