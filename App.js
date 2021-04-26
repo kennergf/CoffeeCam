@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker'
 =======
 import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 >>>>>>> Stashed changes
 
 export default class App extends React.Component {
@@ -40,7 +41,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    //Setting permissions to take pictures using button
+    //Setting permissions to take pictures using state object
     const { hasPermission } = this.state
 
     //User doesn't have granted or denied permissions
@@ -73,10 +74,16 @@ export default class App extends React.Component {
                 backgroundColor: 'transparent'
               }}
               onPress={() => this.pickImage()}>
+              <Entypo 
+                name="instagram" 
+                size={24} 
+                color="black" 
+              />
+              {/* Original Button
               <FontAwesome
                 name="photo"
                 style={{ color: "#fff", fontSize: 40 }}
-              />
+              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={{
