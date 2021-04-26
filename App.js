@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
-var flashMode = Observable();
+
 
 export default class App extends React.Component {
 
@@ -25,6 +25,17 @@ export default class App extends React.Component {
     })
   }
 
+  changeFlashMode = () => {
+    const { flashMode: mode } = this.state
+
+    this.setState({
+      flashMode:
+        mode === Camera.Constants.FlashMode.off
+          ? Camera.Constants.FlashMode.on
+          : Camera.Constants.FlashMode.off
+    })
+  }
+
   takePicture = async () => {
     //Method of Camera
     if (this.camera) {
@@ -35,25 +46,7 @@ export default class App extends React.Component {
     }
   }
  
-
-  function nextFlashMode() {
-    if (flashMode.value == Camera.FLASH_MODE_AUTO) return Camera.FLASH_MODE_ON;
-    else if (flashMode.value == Camera.FLASH_MODE_ON) return Camera.FLASH_MODE_OFF;
-    else if (flashMode.value == Camera.FLASH_MODE_OFF) return Camera.FLASH_MODE_AUTO;
-    else throw "Invalid flash mode";
-  }
-  
-  function changeFlashMode() {
-    Camera.setFlashMode(nextFlashMode())
-        .then(function(newFlashMode) {
-            flashMode.value = newFlashMode;
-            console.log("Flash mode set to: " + flashMode.value);
-        })
-        .catch(function(err) {
-            console.log("Failed to set flash mode: " + err);
-        });
-  }
-  
+ 
 
   pickImage = async () => {
 
