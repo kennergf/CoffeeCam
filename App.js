@@ -215,10 +215,6 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   
-  state = {
-    hasPermission: null,
-    type: Camera.Constants.Type.back,
-  },
   preview: {
       flex: 1,
       justifyContent: 'flex-end',
@@ -226,6 +222,7 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '100%'
   }
+
 
 });
 // End of styles
