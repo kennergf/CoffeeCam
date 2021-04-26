@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import { CameraRoll, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 
-
-
 export default class App extends React.Component {
 
   state = {
@@ -18,7 +16,6 @@ export default class App extends React.Component {
   }
 
   getPermissionAsync = async () => {
-
     const { status } = await Camera.requestPermissionsAsync();
     const { media } = await MediaLibrary.requestPermissionsAsync();
 
@@ -35,7 +32,6 @@ export default class App extends React.Component {
           : Camera.Constants.Type.back
     })
   }
-
 
   async componentDidMount() {
     //Request permission from the user
@@ -75,9 +71,6 @@ export default class App extends React.Component {
     }
   }
 
-
-
-  
   takePictureAndSalveOnAlbum = async () => {
     const { albumName } = this.state;
     // Take the picture
@@ -110,16 +103,13 @@ export default class App extends React.Component {
         }
       })
   };
- 
-  
+
   pickImage = async () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
   }
-
-  
 
   /**
    * Print the visual UI to the screen
@@ -177,14 +167,9 @@ export default class App extends React.Component {
                   color="black"
                 />
                 <FontAwesome
-                 name="share-square"
-                  size={24} 
+                  name="share-square"
+                  size={24}
                   color="black" />
-                {/* Original Button
-              <FontAwesome
-                name="camera"
-                style={{ color: "#fff", fontSize: 40 }}
-              /> */}
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -206,29 +191,6 @@ export default class App extends React.Component {
     }
   }
 } // Here finishes the method App with all the functions for the camera
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Create the styles for the app
