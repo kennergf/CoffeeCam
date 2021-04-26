@@ -4,6 +4,8 @@ import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
+var flashMode = Observable();
+
 export default class App extends React.Component {
 
   async componentDidMount() {
@@ -32,6 +34,26 @@ export default class App extends React.Component {
       console.log('uri', uri);
     }
   }
+ 
+
+  function nextFlashMode() {
+    if (flashMode.value == Camera.FLASH_MODE_AUTO) return Camera.FLASH_MODE_ON;
+    else if (flashMode.value == Camera.FLASH_MODE_ON) return Camera.FLASH_MODE_OFF;
+    else if (flashMode.value == Camera.FLASH_MODE_OFF) return Camera.FLASH_MODE_AUTO;
+    else throw "Invalid flash mode";
+  }
+  
+  function changeFlashMode() {
+    Camera.setFlashMode(nextFlashMode())
+        .then(function(newFlashMode) {
+            flashMode.value = newFlashMode;
+            console.log("Flash mode set to: " + flashMode.value);
+        })
+        .catch(function(err) {
+            console.log("Failed to set flash mode: " + err);
+        });
+  }
+  
 
   pickImage = async () => {
 
@@ -127,25 +149,22 @@ export default class App extends React.Component {
 
 
 
-var flashMode = Observable();
 
-function nextFlashMode() {
-  if (flashMode.value == Camera.FLASH_MODE_AUTO) return Camera.FLASH_MODE_ON;
-  else if (flashMode.value == Camera.FLASH_MODE_ON) return Camera.FLASH_MODE_OFF;
-  else if (flashMode.value == Camera.FLASH_MODE_OFF) return Camera.FLASH_MODE_AUTO;
-  else throw "Invalid flash mode";
-}
 
-function changeFlashMode() {
-  Camera.setFlashMode(nextFlashMode())
-      .then(function(newFlashMode) {
-          flashMode.value = newFlashMode;
-          console.log("Flash mode set to: " + flashMode.value);
-      })
-      .catch(function(err) {
-          console.log("Failed to set flash mode: " + err);
-      });
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Create the styles for the app
