@@ -2,11 +2,40 @@ import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker'
 import React, {useState} from 'react';
 import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 
 
 export default class App extends React.Component {
+
+  state = {
+    hasPermission: null,
+    cameraType: Camera.Constants.Type.back,
+  }
+
+  async componentDidMount() {
+    this.getPermissionAsync()
+  }
+
+  getPermissionAsync = async () => {
+   
+    const { status } = await Camera.requestPermissionsAsync();
+    const { media } =  await MediaLibrary.requestPermissionsAsync();
+   
+    this.setState({ hasPermission: status === 'granted' });
+  }
+
+  handleCameraType = () => {
+    const { cameraType } = this.state
+
+    this.setState({
+      cameraType:
+        cameraType === Camera.Constants.Type.back
+          ? Camera.Constants.Type.front
+          : Camera.Constants.Type.back
+    })
+  }
+  
 
   async componentDidMount() {
     //Request permission from the user
@@ -91,16 +120,10 @@ export default class App extends React.Component {
                 backgroundColor: 'transparent'
               }}
               onPress={() => this.pickImage()}>
-              <Entypo 
-                name="instagram" 
-                size={24} 
-                color="black" 
-              />
-              {/* Original Button
-              <FontAwesome
-                name="photo"
-                style={{ color: "#fff", fontSize: 40 }}
-              /> */}
+            <FontAwesome
+              name="photo"
+              style={{ color: "#fff", fontSize: 40 }}
+            />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -110,10 +133,16 @@ export default class App extends React.Component {
               }}
               onPress={() => this.takePictureAndSalveOnAlbum()}
             >
+            <FontAwesome 
+              name="camera-retro" 
+              size={24} 
+              color="black" 
+            />
+              {/* Original Button
               <FontAwesome
                 name="camera"
                 style={{ color: "#fff", fontSize: 40 }}
-              />
+              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -169,52 +198,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  capture: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    borderWidth: 5,
+    borderColor: constant.COLOR_PRIMARY,
+    backgroundColor: constant.COLOR_PRIMARY,
+    marginBottom: 15
+  },
+  
   state = {
     hasPermission: null,
     type: Camera.Constants.Type.back,
- 
-
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasPermission: status === 'granted' });
   },
-  getPermissionAsync = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
-    const { media } =  await MediaLibrary.requestPermissionsAsync();
-    
-    this.setState({ hasPermission: status === 'granted' });
-  },
-
-async componentDidMount() {
-  this.requestPermissionAsync()
-}, 
-requestPermissionAsync = async () => {
-
-    if (Platform.OS === 'ios') {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Unauthorized permission!');
-      }
-    }
-  
-    const { status } = await Camera.requestPermissionsAsync();
-    const { media } =  await MediaLibrary.requestPermissionsAsync();
-    this.setState({ hasPermission: status === 'granted' });
-  },
-  <View>
-            <Text>Hello</Text>
-            <Button
-                onPress={() => {
-                    navigation.navigate('Two')
-                }}
-                title="Go to Screen Two"
-            />
-        </View>
-}
-  
-
-
+  preview: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%'
+  }
 
 });
 // End of styles
