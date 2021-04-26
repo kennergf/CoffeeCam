@@ -33,6 +33,12 @@ export default class App extends React.Component {
     }
   }
 
+  pickImage = async () => {
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images
+    });
+  }
   /**
    * Print the visual UI to the screen
    */
@@ -115,12 +121,11 @@ export default class App extends React.Component {
   }
 } // Here finishes the method App with all the functions for the camera
 
-pickImage = async () => {
 
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images
-  });
-}
+
+
+
+
 
 var flashMode = Observable();
 
