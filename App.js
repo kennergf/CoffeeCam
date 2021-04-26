@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker'
-import React, {useState} from 'react';
-import { CameraRoll, StyleSheet, Text, View,useWindowDimensions } from 'react-native';
+import React, { useState } from 'react';
+import { CameraRoll, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 
@@ -18,10 +18,10 @@ export default class App extends React.Component {
   }
 
   getPermissionAsync = async () => {
-   
+
     const { status } = await Camera.requestPermissionsAsync();
-    const { media } =  await MediaLibrary.requestPermissionsAsync();
-   
+    const { media } = await MediaLibrary.requestPermissionsAsync();
+
     this.setState({ hasPermission: status === 'granted' });
   }
 
@@ -35,7 +35,7 @@ export default class App extends React.Component {
           : Camera.Constants.Type.back
     })
   }
-  
+
 
   async componentDidMount() {
     //Request permission from the user
@@ -74,8 +74,8 @@ export default class App extends React.Component {
       console.log('uri', uri);
     }
   }
- 
- 
+
+
 
   pickImage = async () => {
 
@@ -93,73 +93,77 @@ export default class App extends React.Component {
     //User doesn't have granted or denied permissions
     if (hasPermission === null) {
       return <View />;
-    
-    //Denied permission
-    }else if(hasPermission === false){
-      return(
+
+      //Denied permission
+    } else if (hasPermission === false) {
+      return (
         <View style={{
           flex: 1,
           backgroundColor: '#fff',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-           <Text>No access to camera</Text>
+          <Text>No access to camera</Text>
         </View>
       );
-    
-    //Granted permission
-    }else{
-      return(
+
+      //Granted permission
+    } else {
+      return (
         <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} type={this.state.cameraOrientation} ref={ref => { this.camera = ref }}>
-          <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                backgroundColor: 'transparent'
-              }}
-              onPress={() => this.pickImage()}>
-            <FontAwesome
-              name="photo"
-              style={{ color: "#fff", fontSize: 40 }}
-            />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-              }}
-              onPress={() => this.takePictureAndSalveOnAlbum()}
-            >
-            <FontAwesome 
-              name="camera-retro" 
-              size={24} 
-              color="black" 
-            />
-              {/* Original Button
+          <Camera style={{ flex: 1 }} type={this.state.cameraOrientation} ref={ref => { this.camera = ref }}>
+            <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent'
+                }}
+                onPress={() => this.pickImage()}>
+                <FontAwesome
+                  name="photo"
+                  style={{ color: "#fff", fontSize: 40 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}
+                onPress={() => this.takePictureAndSalveOnAlbum()}
+              >
+                <FontAwesome
+                  name="camera-retro"
+                  size={24}
+                  color="black"
+                />
+                <FontAwesome
+                 name="share-square"
+                  size={24} 
+                  color="black" />
+                {/* Original Button
               <FontAwesome
                 name="camera"
                 style={{ color: "#fff", fontSize: 40 }}
               /> */}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                alignSelf: 'flex-end',
-                alignItems: 'center',
-                backgroundColor: 'transparent',
-              }}
-              onPress={() => this.changeCameraOrientation()}
-            >
-              <MaterialCommunityIcons
-                name="camera-switch"
-                style={{ color: "#fff", fontSize: 40 }}
-              />
-            </TouchableOpacity>
-          </View>
-        </Camera>
-      </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}
+                onPress={() => this.changeCameraOrientation()}
+              >
+                <MaterialCommunityIcons
+                  name="camera-switch"
+                  style={{ color: "#fff", fontSize: 40 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        </View>
       );
     }
   }
@@ -207,13 +211,13 @@ const styles = StyleSheet.create({
     backgroundColor: constant.COLOR_PRIMARY,
     marginBottom: 15
   },
-  
+
   preview: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      width: '100%',
-      height: '100%'
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%'
   }
 
 
