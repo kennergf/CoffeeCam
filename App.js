@@ -65,24 +65,50 @@ export default class App extends React.Component {
     })
   }
 
-  takePicture = async () => {
-    //Method of Camera
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
-      console.log(photo);
-      const { uri } = photo;
-      console.log('uri', uri);
-    }
-  }
- 
- 
+  
+  takePictureAndSalveOnAlbum = async () => {
+    const { albumName } = this.state;
+    // Take the picture
+    this.cameraShutter.replayAsync();
+    const { uri } = await this.camera.takePictureAsync();
+    // Save it to the DCIM folder
+    const asset = await MediaLibrary.createAssetAsync(uri);
 
+    // Check if the album exists
+    MediaLibrary.getAlbumAsync(albumName)
+      .then(album => {
+        if (album == null) {
+          // Create a new album and move the picture to it
+          MediaLibrary.createAlbumAsync('CoffeeCam', asset, false)
+            .then(() => {
+              console.log('Album created!')
+            })
+            .catch(error => {
+              console.log('Error: ' + error)
+            });
+        } else {
+          // Add the picture to the existing album
+          MediaLibrary.addAssetsToAlbumAsync(asset, album.id, false)
+            .then(() => {
+              console.log('Photo added!')
+            })
+            .catch(error => {
+              console.log('Error: ' + error)
+            });
+        }
+      })
+  };
+ 
+  
   pickImage = async () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
   }
+
+  
+
   /**
    * Print the visual UI to the screen
    */
