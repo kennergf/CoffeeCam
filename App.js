@@ -14,6 +14,7 @@ export default class App extends React.Component {
     albumName: 'CoffeeCam',
     hasPermission: null,
     cameraOrientation: Camera.Constants.Type.back,
+    flashMode: Camera.Constants.FlashMode.off,
   }
 
   async componentDidMount() {
@@ -62,7 +63,7 @@ export default class App extends React.Component {
         mode === Camera.Constants.FlashMode.off
           ? Camera.Constants.FlashMode.on
           : Camera.Constants.FlashMode.off
-    })
+    });
   }
 
   /**
@@ -136,50 +137,47 @@ export default class App extends React.Component {
       //Granted permission
     } else {
       return (
-        <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.cameraOrientation} ref={ref => { this.camera = ref }}>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", margin: 30 }}>
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent'
-                }}
-                onPress={() => this.pickImage()}>
-                <FontAwesome
-                  name="photo"
-                  style={{ color: "#fff", fontSize: 40 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                }}
-                onPress={() => this.takePictureAndSalveOnAlbum()}
-              >
-                <FontAwesome
-                  name="camera-retro"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                }}
-                onPress={() => this.changeCameraOrientation()}
-              >
-                <MaterialCommunityIcons
-                  name="camera-switch"
-                  style={{ color: "#fff", fontSize: 40 }}
-                />
-              </TouchableOpacity>
-            </View>
+        <View style={styles.container}>
+          <View style={styles.viewTop}>
+            <TouchableOpacity
+              style={styles.buttonTop}
+              onPress={() => this.changeFlashMode()}>
+              <Entypo
+                name="flashlight"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
+          <Camera style={styles.capture} type={this.state.cameraOrientation} flashMode={this.state.flashMode} ref={ref => { this.camera = ref }}>
           </Camera>
+          <View style={styles.viewBottom}>
+            <TouchableOpacity
+              style={styles.buttonBottom}
+              onPress={() => this.pickImage()}>
+              <FontAwesome
+                name="photo"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonBottom}
+              onPress={() => this.takePictureAndSalveOnAlbum()}
+            >
+              <FontAwesome
+                name="camera-retro"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonBottom}
+              onPress={() => this.changeCameraOrientation()}
+            >
+              <MaterialCommunityIcons
+                name="camera-switch"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -193,27 +191,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  viewTop: {
+    flex: 1,
+    top: '4%',
+    //flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 0,
+    backgroundColor: "black",
   },
   capture: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    borderWidth: 5,
-    //borderColor: constant.COLOR_PRIMARY,
-    //backgroundColor: constant.COLOR_PRIMARY,
-    marginBottom: 15
+    flex: 4,
   },
-
-  preview: {
+  viewBottom: {
     flex: 1,
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 0,
+    height: '10%',
+    backgroundColor: "black",
+  },
+  buttonTop: {
+    alignSelf: 'flex-start',
     alignItems: 'center',
-    width: '100%',
-    height: '100%'
-  }
-
-
+    margin: 30,
+    backgroundColor: 'transparent',
+  },
+  buttonBottom: {
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    margin: 30,
+    backgroundColor: 'transparent',
+  },
+  icon: {
+    color: "#fff",
+    fontSize: 40,
+  },
 });
 // End of styles
