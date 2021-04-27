@@ -32,6 +32,9 @@ export default class App extends React.Component {
     }
   }
 
+  /**
+   * Request the user for the required permissions
+   */
   requestPermissionAsync = async () => {
     const cameraPermission = await Camera.requestPermissionsAsync();
     const storagePermission = await MediaLibrary.requestPermissionsAsync();
@@ -55,15 +58,26 @@ export default class App extends React.Component {
     })
   }
 
+  /**
+   * Change the Flash Mode for the camera
+   */
   changeFlashMode = () => {
     const { flashMode: mode } = this.state
 
-    this.setState({
-      flashMode:
-        mode === Camera.Constants.FlashMode.off
-          ? Camera.Constants.FlashMode.on
-          : Camera.Constants.FlashMode.off
-    });
+    this.setState({ flashMode: this.nextFlashMode() });
+  }
+
+  /**
+   * Change the flash mode based on a list of possible values
+   * @returns Return next flash mode
+   */
+  nextFlashMode = () => {
+    const { flashMode: mode } = this.state
+
+    if (mode == Camera.Constants.FlashMode.auto) return Camera.Constants.FlashMode.on;
+    else if (mode == Camera.Constants.FlashMode.on) return Camera.Constants.FlashMode.off;
+    else if (mode == Camera.Constants.FlashMode.off) return Camera.Constants.FlashMode.auto;
+    else return Camera.Constants.FlashMode.off;
   }
 
   /**
