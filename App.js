@@ -2,11 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
+import { StatusBar } from 'expo-status-bar';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-
-import { StatusBar } from 'expo-status-bar';
 
 export default class App extends React.Component {
 
@@ -15,6 +14,7 @@ export default class App extends React.Component {
     hasPermission: null,
     cameraOrientation: Camera.Constants.Type.back,
     flashMode: Camera.Constants.FlashMode.off,
+    takingPicture: false,
   }
 
   async componentDidMount() {
@@ -104,8 +104,9 @@ export default class App extends React.Component {
    */
   takePictureAndSalveOnAlbum = async () => {
     // REF https://reactnativemaster.com/react-native-camera-expo-example/
-    const { albumName } = this.state;
+    const { albumName, takingPicture } = this.state;
     // Take the picture
+    this.setState({ takingPicture: true });
     this.cameraShutter.replayAsync();
     const { uri } = await this.camera.takePictureAsync();
     // Save it to the DCIM folder
@@ -135,8 +136,10 @@ export default class App extends React.Component {
               console.log('Error: ' + error)
             });
         }
-      })
-  };
+      });
+
+    this.setState({ takingPicture: false });
+  }
 
   pickImage = async () => {
 
@@ -153,12 +156,13 @@ export default class App extends React.Component {
     Linking.openSettings();
   }
 
+  // REF https://docs.expo.io/versions/latest/sdk/status-bar/
   /**
    * Print the visual UI to the screen
    */
   render() {
     //Setting permissions to take pictures using state object
-    const { hasPermission, flashMode, cameraOrientation } = this.state
+    const { hasPermission, flashMode, cameraOrientation, takingPicture } = this.state
 
     //User doesn't have granted or denied permissions
     if (hasPermission === null) {
@@ -192,6 +196,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
+          <StatusBar style="light" backgroundColor={takingPicture ? "cornflowerblue" : "darkseagreen"} />
           <View style={styles.viewTop}>
             <TouchableOpacity
               style={styles.buttonTop}
