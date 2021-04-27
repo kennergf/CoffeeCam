@@ -203,7 +203,7 @@ export default class App extends React.Component {
               onPress={() => this.changeCameraOrientation()}
             >
               <MaterialIcons
-                name="flip-camera-ios"
+                name={this.state.cameraOrientation === Camera.Constants.Type.back ? "camera-rear" : "camera-front"}
                 style={styles.icon}
               />
             </TouchableOpacity>
