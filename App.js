@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Linking, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
-import { Entypo, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -21,6 +21,7 @@ export default class App extends React.Component {
     //Request permission from the user
     this.requestPermissionAsync();
 
+    // REF https://blog.risingstack.com/react-native-tutorial-animation-and-sound/
     //Adding sound when taking picture
     this.cameraShutter = new Audio.Sound();
     try {
@@ -36,6 +37,7 @@ export default class App extends React.Component {
    * Request the user for the required permissions
    */
   requestPermissionAsync = async () => {
+    // REF https://stackoverflow.com/questions/59980039/permissions-askasync-not-working-as-expected
     const cameraPermission = await Camera.requestPermissionsAsync();
     const storagePermission = await MediaLibrary.requestPermissionsAsync();
     const permissionGranted = (cameraPermission.status === 'granted' && storagePermission.status === 'granted');
@@ -101,6 +103,7 @@ export default class App extends React.Component {
    * If the album doesn't exist, create one
    */
   takePictureAndSalveOnAlbum = async () => {
+    // REF https://reactnativemaster.com/react-native-camera-expo-example/
     const { albumName } = this.state;
     // Take the picture
     this.cameraShutter.replayAsync();
@@ -108,6 +111,8 @@ export default class App extends React.Component {
     // Save it to the DCIM folder
     const asset = await MediaLibrary.createAssetAsync(uri);
 
+    // REF https://blog.expo.io/using-expos-medialibrary-api-to-create-an-album-and-save-a-photo-9000931c267b
+    // REF https://stackoverflow.com/questions/63532277/unhandled-promise-rejection-typeerror-undefined-is-not-an-object-evaluating/67184343#67184343
     // Check if the album exists
     MediaLibrary.getAlbumAsync(albumName)
       .then(album => {
@@ -144,6 +149,7 @@ export default class App extends React.Component {
    * Open the Settings of the phone
    */
   openSettings = () => {
+    // REF https://reactnative.dev/docs/linking
     Linking.openSettings();
   }
 
@@ -232,6 +238,7 @@ export default class App extends React.Component {
   }
 } // Here finishes the method App with all the functions for the camera
 
+// REF https://www.codementor.io/@foysalit/building-a-camera-app-with-react-native-r8up5685v
 /**
  * Create the styles for the app
  */
