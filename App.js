@@ -1,9 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import * as ImagePicker from 'expo-image-picker'
 import React, { useState } from 'react';
-import { CameraRoll, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, Text, View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
+import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
+import { Entypo, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { StatusBar } from 'expo-status-bar';
 
 export default class App extends React.Component {
 
@@ -27,7 +30,7 @@ export default class App extends React.Component {
     }
   }
 
-  getPermissionAsync = async () => {
+  requestPermissionAsync = async () => {
     const { status } = await Camera.requestPermissionsAsync();
     const { media } = await MediaLibrary.requestPermissionsAsync();
 
@@ -173,10 +176,6 @@ export default class App extends React.Component {
                   size={24}
                   color="black"
                 />
-                <FontAwesome
-                  name="share-square"
-                  size={24}
-                  color="black" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -214,8 +213,8 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
     borderWidth: 5,
-    borderColor: constant.COLOR_PRIMARY,
-    backgroundColor: constant.COLOR_PRIMARY,
+    //borderColor: constant.COLOR_PRIMARY,
+    //backgroundColor: constant.COLOR_PRIMARY,
     marginBottom: 15
   },
 
