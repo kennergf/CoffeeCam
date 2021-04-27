@@ -4,7 +4,7 @@ import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
-import { Entypo, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -47,15 +47,21 @@ export default class App extends React.Component {
   * Change the camera orientation from back to front ans vice versa
   */
   changeCameraOrientation = () => {
-    //Functional component
-    const { cameraOrientation: orientation } = this.state
+    const { cameraOrientation: orientation } = this.state;
 
-    this.setState({
-      cameraOrientation:
-        orientation === Camera.Constants.Type.back
-          ? Camera.Constants.Type.front
-          : Camera.Constants.Type.Back
-    })
+    this.setState({ cameraOrientation: this.nextCameraOrientation() });
+  }
+
+  /**
+   * Change the camera orientation based on a list of possible values
+   * @returns Return next camera orientation
+   */
+  nextCameraOrientation = () => {
+    const { cameraOrientation: orientation } = this.state;
+
+    if (orientation == Camera.Constants.Type.back) return Camera.Constants.Type.front;
+    else if (orientation == Camera.Constants.Type.front) return Camera.Constants.Type.back;
+    else return Camera.Constants.Type.back;
   }
 
   /**
@@ -76,8 +82,18 @@ export default class App extends React.Component {
 
     if (mode == Camera.Constants.FlashMode.auto) return Camera.Constants.FlashMode.on;
     else if (mode == Camera.Constants.FlashMode.on) return Camera.Constants.FlashMode.off;
-    else if (mode == Camera.Constants.FlashMode.off) return Camera.Constants.FlashMode.auto;
+    else if (mode == Camera.Constants.FlashMode.off) return Camera.Constants.FlashMode.torch;
+    else if (mode == Camera.Constants.FlashMode.torch) return Camera.Constants.FlashMode.auto;
     else return Camera.Constants.FlashMode.off;
+  }
+
+  getFlashModeIcon = () => {
+    const { flashMode: mode } = this.state
+
+    if (mode == Camera.Constants.FlashMode.auto) return "flash-auto";
+    else if (mode == Camera.Constants.FlashMode.on) return "flash-on";
+    else if (mode == Camera.Constants.FlashMode.off) return "flash-off";
+    else if (mode == Camera.Constants.FlashMode.torch) return "highlight";
   }
 
   /**
@@ -156,8 +172,8 @@ export default class App extends React.Component {
             <TouchableOpacity
               style={styles.buttonTop}
               onPress={() => this.changeFlashMode()}>
-              <Entypo
-                name="flashlight"
+              <MaterialIcons
+                name={this.getFlashModeIcon()}
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -168,8 +184,8 @@ export default class App extends React.Component {
             <TouchableOpacity
               style={styles.buttonBottom}
               onPress={() => this.pickImage()}>
-              <FontAwesome
-                name="photo"
+              <MaterialIcons
+                name="photo-library"
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -186,8 +202,8 @@ export default class App extends React.Component {
               style={styles.buttonBottom}
               onPress={() => this.changeCameraOrientation()}
             >
-              <MaterialCommunityIcons
-                name="camera-switch"
+              <MaterialIcons
+                name="flip-camera-ios"
                 style={styles.icon}
               />
             </TouchableOpacity>
