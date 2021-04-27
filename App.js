@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Linking, useWindowDimensions } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
@@ -141,6 +141,13 @@ export default class App extends React.Component {
   }
 
   /**
+   * Open the Settings of the phone
+   */
+  openSettings = () => {
+    Linking.openSettings();
+  }
+
+  /**
    * Print the visual UI to the screen
    */
   render() {
@@ -160,7 +167,18 @@ export default class App extends React.Component {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Text>No access to camera</Text>
+          <Text>This APP needs Camera and Storage access to work</Text>
+          <Text>Change the settings on the gear below</Text>
+          <View>
+            <TouchableOpacity
+              style={styles.buttonTop}
+              onPress={() => this.openSettings()}>
+              <FontAwesome
+                name="gear"
+                style={{ color: "black", fontSize: 40, }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       );
 
