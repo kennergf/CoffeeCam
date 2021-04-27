@@ -158,7 +158,7 @@ export default class App extends React.Component {
    */
   render() {
     //Setting permissions to take pictures using state object
-    const { hasPermission } = this.state
+    const { hasPermission, flashMode, cameraOrientation } = this.state
 
     //User doesn't have granted or denied permissions
     if (hasPermission === null) {
@@ -202,7 +202,7 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Camera style={styles.capture} type={this.state.cameraOrientation} flashMode={this.state.flashMode} ref={ref => { this.camera = ref }}>
+          <Camera style={styles.capture} type={cameraOrientation} flashMode={flashMode} ref={ref => { this.camera = ref }}>
           </Camera>
           <View style={styles.viewBottom}>
             <TouchableOpacity
@@ -227,7 +227,7 @@ export default class App extends React.Component {
               onPress={() => this.changeCameraOrientation()}
             >
               <MaterialIcons
-                name={this.state.cameraOrientation === Camera.Constants.Type.back ? "camera-rear" : "camera-front"}
+                name={cameraOrientation === Camera.Constants.Type.back ? "camera-rear" : "camera-front"}
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   viewTop: {
     flex: 1,
-    top: '4%',
+    top: '3%',
     //flexDirection: "row",
     justifyContent: "space-between",
     margin: 0,
@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 0,
-    height: '10%',
     backgroundColor: "black",
   },
   buttonTop: {
