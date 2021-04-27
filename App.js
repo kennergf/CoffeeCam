@@ -11,8 +11,9 @@ import { StatusBar } from 'expo-status-bar';
 export default class App extends React.Component {
 
   state = {
+    albumName: 'CoffeeCam',
     hasPermission: null,
-    cameraType: Camera.Constants.Type.back,
+    cameraOrientation: Camera.Constants.Type.back,
   }
 
   async componentDidMount() {
@@ -31,23 +32,16 @@ export default class App extends React.Component {
   }
 
   requestPermissionAsync = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
-    const { media } = await MediaLibrary.requestPermissionsAsync();
+    const { cameraPermission } = await Camera.requestPermissionsAsync();
+    const { storagePermission } = await MediaLibrary.requestPermissionsAsync();
+    const permissionGranted = (cameraPermission.status === 'granted' && storagePermission.status === 'granted');
 
-    this.setState({ hasPermission: status === 'granted' });
+    this.setState({ hasPermission: permissionGranted });
   }
 
-  handleCameraType = () => {
-    const { cameraType } = this.state
-
-    this.setState({
-      cameraType:
-        cameraType === Camera.Constants.Type.back
-          ? Camera.Constants.Type.front
-          : Camera.Constants.Type.back
-    })
-  }
-
+  /**
+  * Change the camera orientation from back to front ans vice versa
+  */
   changeCameraOrientation = () => {
     //Functional component
     const { cameraOrientation: orientation } = this.state
@@ -71,16 +65,10 @@ export default class App extends React.Component {
     })
   }
 
-  takePicture = async () => {
-    //Method of Camera
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
-      console.log(photo);
-      const { uri } = photo;
-      console.log('uri', uri);
-    }
-  }
-
+  /**
+   * Take a picture and save on the album
+   * If the album doesn't exist, create one
+   */
   takePictureAndSalveOnAlbum = async () => {
     const { albumName } = this.state;
     // Take the picture
