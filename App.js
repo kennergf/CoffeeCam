@@ -32,8 +32,8 @@ export default class App extends React.Component {
   }
 
   requestPermissionAsync = async () => {
-    const { cameraPermission } = await Camera.requestPermissionsAsync();
-    const { storagePermission } = await MediaLibrary.requestPermissionsAsync();
+    const cameraPermission = await Camera.requestPermissionsAsync();
+    const storagePermission = await MediaLibrary.requestPermissionsAsync();
     const permissionGranted = (cameraPermission.status === 'granted' && storagePermission.status === 'granted');
 
     this.setState({ hasPermission: permissionGranted });
