@@ -4,7 +4,6 @@
     "slug": "CoffeeCam",
     "version": "1.0.0",
     "orientation": "portrait",
-    // REF https://www.flaticon.com/free-icon/photo-camera_1299990
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",

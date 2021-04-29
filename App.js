@@ -1,10 +1,13 @@
+// REF https://www.flaticon.com/free-icon/photo-camera_1299990
+// REF https://reactnative.dev/docs/image
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Linking, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Audio } from 'expo-av';
 import { StatusBar } from 'expo-status-bar';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
+import * as Sharing from 'expo-sharing';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 export default class App extends React.Component {
@@ -15,6 +18,7 @@ export default class App extends React.Component {
     cameraOrientation: Camera.Constants.Type.back,
     flashMode: Camera.Constants.FlashMode.off,
     takingPicture: false,
+    pictureUri: null,
   }
 
   async componentDidMount() {
@@ -146,13 +150,30 @@ export default class App extends React.Component {
     this.setState({ takingPicture: false });
   }
 
-  pickImage = async () => {
-
-    let result = await ImagePicker.launchImageLibraryAsync({
+  /**
+   * Open one picture from the gallery
+   */
+  openPictureViewer = async () => {
+    let picture = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
 
-    console.log(result);
+    this.setState({ pictureUri: picture.uri });
+  }
+
+  /**
+   * Close the picture viewer and return to camera
+   */
+  closePictureViewer = async () => {
+    this.setState({ pictureUri: null });
+  }
+
+  /**
+   * Open Dialog to share the picture
+   */
+  openShareDialog = async () => {
+    const { pictureUri } = this.state;
+    await Sharing.shareAsync(pictureUri);
   }
 
   /**
@@ -169,7 +190,7 @@ export default class App extends React.Component {
    */
   render() {
     //Setting permissions to take pictures using state object
-    const { hasPermission, flashMode, cameraOrientation, takingPicture } = this.state
+    const { hasPermission, flashMode, cameraOrientation, takingPicture, pictureUri } = this.state
 
     //User doesn't have granted or denied permissions
     if (hasPermission === null) {
@@ -188,7 +209,7 @@ export default class App extends React.Component {
           <Text>Change the settings on the gear below</Text>
           <View>
             <TouchableOpacity
-              style={styles.buttonTop}
+              style={styles.button}
               onPress={() => this.openSettings()}>
               <FontAwesome
                 name="gear"
@@ -200,13 +221,41 @@ export default class App extends React.Component {
       );
 
       //Granted permission
-    } else {
+    } else if (pictureUri != null) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.view}></View>
+          <View style={styles.pictureContainer} key={pictureUri}>
+            <Image source={{ uri: pictureUri }} style={styles.picture} />
+          </View>
+          <View style={styles.view}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.closePictureViewer()}>
+              <MaterialIcons
+                name="arrow-back"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.openShareDialog()}>
+              <MaterialIcons
+                name="share"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+    else {
       return (
         <View style={styles.container}>
           <StatusBar style="light" backgroundColor={takingPicture ? "cornflowerblue" : "darkseagreen"} />
-          <View style={styles.viewTop}>
+          <View style={styles.view}>
             <TouchableOpacity
-              style={styles.buttonTop}
+              style={styles.button}
               onPress={() => this.changeFlashMode()}>
               <MaterialIcons
                 name={this.getFlashModeIcon()}
@@ -214,19 +263,19 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
           </View>
-          <Camera style={styles.capture} type={cameraOrientation} flashMode={flashMode} ref={ref => { this.camera = ref }}>
+          <Camera style={styles.pictureContainer} type={cameraOrientation} flashMode={flashMode} ref={ref => { this.camera = ref }}>
           </Camera>
-          <View style={styles.viewBottom}>
+          <View style={styles.view}>
             <TouchableOpacity
-              style={styles.buttonBottom}
-              onPress={() => this.pickImage()}>
+              style={styles.button}
+              onPress={() => this.openPictureViewer()}>
               <MaterialIcons
                 name="photo-library"
                 style={styles.icon}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.buttonBottom}
+              style={styles.button}
               onPress={() => this.takePictureAndSalveOnAlbum()}
             >
               <FontAwesome
@@ -235,7 +284,7 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.buttonBottom}
+              style={styles.button}
               onPress={() => this.changeCameraOrientation()}
             >
               <MaterialIcons
@@ -259,39 +308,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  viewTop: {
-    flex: 1,
-    top: '3%',
-    //flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 0,
-    backgroundColor: "black",
-  },
-  capture: {
+  pictureContainer: {
     flex: 4,
   },
-  viewBottom: {
+  view: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 0,
     backgroundColor: "black",
   },
-  buttonTop: {
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    margin: 30,
-    backgroundColor: 'transparent',
-  },
-  buttonBottom: {
+  button: {
     alignSelf: 'flex-end',
     alignItems: 'center',
     margin: 30,
     backgroundColor: 'transparent',
   },
   icon: {
-    color: "#fff",
+    color: "white",
     fontSize: 40,
   },
+  picture: {
+    height: "100%",
+    width: "100%"
+  }
 });
 // End of styles
