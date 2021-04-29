@@ -89,6 +89,11 @@ export default class App extends React.Component {
     else return Camera.Constants.FlashMode.off;
   }
 
+  // REF https://stackoverflow.com/questions/45478621/react-native-styling-with-conditional
+  /**
+   * Get the icon related with the actual flash mode
+   * @returns Icon related with the actual flash mode
+   */
   getFlashModeIcon = () => {
     const { flashMode: mode } = this.state
 
@@ -146,6 +151,8 @@ export default class App extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
+
+    console.log(result);
   }
 
   /**
